@@ -9,7 +9,7 @@ public class EnnemiManager : MonoBehaviour
 {
     public List<GameObject> ennemis { get; set; }
     private PlayerManagerComponent _playerManagerComponent;
-    public float[] distanceEnnemis;
+    public List<float> distanceEnnemis;
     public float distanceEnnemiPlusProche;
     private Vector3 positionPlayer;
     private int[] vieEnnemis;
@@ -34,26 +34,27 @@ public class EnnemiManager : MonoBehaviour
 
     private void Update()
     {
-         distanceEnnemis = new float[ennemis.Count];
+        distanceEnnemis = new List<float>();
         for (int i = 0; i < ennemis.Count; i++)
         {
-            distanceEnnemis[i] = Mathf.Sqrt(
+            distanceEnnemis.Add(Mathf.Sqrt(
                 Mathf.Pow(ennemis[i].transform.position.x - positionPlayer.x, 2) +
                 Mathf.Pow(ennemis[i].transform.position.y - positionPlayer.y, 2) +
-                Mathf.Pow(ennemis[i].transform.position.z - positionPlayer.z, 2));
+                Mathf.Pow(ennemis[i].transform.position.z - positionPlayer.z, 2)));  
         }
 
-        for (int i = 0; i < vieEnnemis.Length; i++)
+        for (int i = 0; i < ennemis.Count; i++)
         {
             if (vieEnnemis[0] <= 0)
             {
                 Destroy(ennemis[i].gameObject);
                 ennemis.RemoveAt(i);
+                distanceEnnemis.RemoveAt(i);
             }
         }
         vieEnnemis = vieEnnemis.Where(x => x != 0).ToArray();
 
-        distanceEnnemiPlusProche = Mathf.Max(distanceEnnemis);
+        distanceEnnemiPlusProche = Mathf.Max(distanceEnnemis.ToArray());
 
     }
     
