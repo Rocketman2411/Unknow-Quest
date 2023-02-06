@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerManagerComponent : MonoBehaviour
@@ -13,18 +14,15 @@ public class PlayerManagerComponent : MonoBehaviour
     private void Awake()
     {
         _ennemiManager = new EnnemiManager();
-        distanceEnnemiPlusProche = new List<Vector3>();
+        distanceEnnemiPlusProche = new Vector3();
         ennemis = _ennemiManager.ennemis;
+        _ennemiManager.distanceEnnemis.Max();
     }
 
     private void Update()
     {
-        
-        
-        
-        
         // sert à regénérer quand player assez loin d'un ennemi
-        if (Mathf.Sqrt(Mathf.Pow(distanceEnnemiPlusProche.x,2) + Mathf.Pow(distanceEnnemiPlusProche.y,2) + Mathf.Pow(distanceEnnemiPlusProche.z,2)) >= 10
+        if (_ennemiManager.distanceEnnemiPlusProche >= 20
             && life.vie < gameObject.layer * 10)
             life.vie++;
         

@@ -8,7 +8,8 @@ public class EnnemiManager : MonoBehaviour
 {
     public List<GameObject> ennemis { get; set; }
     private PlayerManagerComponent _playerManagerComponent;
-
+    public float[] distanceEnnemis;
+    public float distanceEnnemiPlusProche;
     private void Awake()
     {
         ennemis = new List<GameObject>();
@@ -23,12 +24,16 @@ public class EnnemiManager : MonoBehaviour
 
     private void Update()
     {
-        Vector3[] distanceEnnemis = new Vector3()[ennemis.Count];
-        GameObject ennemiPlusproche = new GameObject();
+         distanceEnnemis = new float[ennemis.Count];
         for (int i = 0; i < ennemis.Count; i++)
         {
-            distanceEnnemis[i] = ennemis[i].gameObject.transform.position -
-                                 _playerManagerComponent.gameObject.transform.position;
+            distanceEnnemis[i] = Mathf.Sqrt(
+                Mathf.Pow(ennemis[i].transform.position.x - _playerManagerComponent.transform.position.x, 2) +
+                Mathf.Pow(ennemis[i].transform.position.y - _playerManagerComponent.transform.position.y, 2) +
+                Mathf.Pow(ennemis[i].transform.position.z - _playerManagerComponent.transform.position.z, 2));
         }
+
+        distanceEnnemiPlusProche = Mathf.Max(distanceEnnemis);
+
     }
 }
