@@ -55,9 +55,5 @@ public class EnnemiManager : MonoBehaviour
         vieEnnemis = vieEnnemis.Where(x => x != 0).ToArray();
 
         distanceEnnemiPlusProche = Mathf.Max(distanceEnnemis.ToArray());
-
     }
-    
-
-    
 }
