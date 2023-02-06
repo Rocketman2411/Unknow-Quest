@@ -13,7 +13,7 @@ public class DégatComponent : MonoBehaviour
         life = gameObject.GetComponent<LifeComponent>();
     }
 
-    void PrendreDégat(int dégat) => life.vie -= dégat;
+    void PrendreDégat() => life.vie -= dégat;
 
 
 }
