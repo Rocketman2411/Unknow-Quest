@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class EnnemiManager : MonoBehaviour
 {
-    private List<GameObject> ennemis;
+    public List<GameObject> ennemis { get; set; }
 
     private void Awake()
     {
