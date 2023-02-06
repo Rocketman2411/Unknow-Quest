@@ -9,6 +9,6 @@ public class LifeComponent : MonoBehaviour
     private void Awake() => vie = gameObject.layer * 10;
         
 
-    public void ChangerVie(int points) => vie += points; // pour perdre des points de vie, mettre un int négatif
+    
         
 }
