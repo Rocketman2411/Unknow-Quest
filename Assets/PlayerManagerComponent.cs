@@ -19,11 +19,11 @@ public class PlayerManagerComponent : MonoBehaviour
 
     private void Update()
     {
-        
-        if (Mathf.Sqrt(Mathf.Pow(distanceEnnemi.x,2) + Mathf.Pow(distanceEnnemi.y,2) + Mathf.Pow(distanceEnnemi.z,2)) >= 10)
-        {
+        // sert à regénérer quand player assez loin d'un ennemi
+        if (Mathf.Sqrt(Mathf.Pow(distanceEnnemi.x,2) + Mathf.Pow(distanceEnnemi.y,2) + Mathf.Pow(distanceEnnemi.z,2)) >= 10
+            && life.vie < gameObject.layer * 10)
             life.vie++;
-        }
-        
+        if (life.vie == 0)
+            Destroy(gameObject);
     }
 }
