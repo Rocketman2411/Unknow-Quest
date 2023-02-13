@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class EnnemiScriptComponent : MonoBehaviour
 {
-    public int life;
-    public int attaque;
+    [SerializeField]public int life;
+    [SerializeField]public int attaque;
 
-    private Vector3 positionEnnemi;
+    [SerializeField]private Vector3 positionEnnemi;
     private List<PlayerComponent> joueurs;
     private int difficulté;
 
@@ -30,7 +30,7 @@ public class EnnemiScriptComponent : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ContactPoint c = collision.GetContact(0);
-        if (c.otherCollider.gameObject.layer == 6)
+        if (c.otherCollider.gameObject.layer == 8)
         {
             c.otherCollider.gameObject.GetComponent<PlayerComponent>().life -= attaque;
         }

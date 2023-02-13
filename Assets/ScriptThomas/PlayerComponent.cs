@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PlayerComponent : MonoBehaviour
 {
-    public int life;
-    public int attaque;
-    public Vector3 position;
+    [SerializeField]public int life;
+    [SerializeField]public int attaque;
+    [SerializeField]public Vector3 position;
     public Vector3 positionDépart;
 
     private void Awake()
     {
-        positionDépart = transform.position;
+        position = positionDépart = transform.position;
     }
 
     private void Update()
@@ -24,7 +24,7 @@ public class PlayerComponent : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ContactPoint c = collision.GetContact(0);
-        if (c.otherCollider.gameObject.layer == 7)
+        if (c.otherCollider.gameObject.layer == 8)
         {
             c.otherCollider.gameObject.GetComponent<EnnemiScriptComponent>().life -= attaque;
         }
