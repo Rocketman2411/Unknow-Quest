@@ -25,14 +25,9 @@ public class PlayerComponent : MonoBehaviour
     {
         ContactPoint c = collision.GetContact(0);
         if (c.otherCollider.gameObject.layer == 8)
-        {
             c.otherCollider.gameObject.GetComponent<EnnemiScriptComponent>().life -= attaque;
-        }
     }
     
     void RespawnerAprèsMort()
-    {
-        transform.position = positionDépart;
-        
-    }
+       => transform.position = positionDépart;
 }

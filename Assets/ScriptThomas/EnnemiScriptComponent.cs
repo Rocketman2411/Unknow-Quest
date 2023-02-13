@@ -16,7 +16,6 @@ public class EnnemiScriptComponent : MonoBehaviour
     private void Awake()
     {
         difficulté = FindObjectOfType<EnnemyManager>().difficulté;
-        
         joueurs = FindObjectsOfType<PlayerComponent>().ToList();
     }
 
@@ -31,9 +30,7 @@ public class EnnemiScriptComponent : MonoBehaviour
     {
         ContactPoint c = collision.GetContact(0);
         if (c.otherCollider.gameObject.layer == 8)
-        {
             c.otherCollider.gameObject.GetComponent<PlayerComponent>().life -= attaque;
-        }
     }
 
     public float[] CalculerDistanceAvecPlayers()

@@ -16,9 +16,7 @@ public class ArmeComponent : MonoBehaviour
         position = transform.position;
         armes = FindObjectsOfType<ArmeComponent>().ToList();
         foreach (var arme in armes)
-        {
             objetArmes.Add(arme.gameObject);
-        }
     }
 
     private void Update()
@@ -29,7 +27,5 @@ public class ArmeComponent : MonoBehaviour
     }
 
     public void RemplacerArme(int nouvArme)
-    {
-        objetArmes[nouvArme].transform.SetParent(FindObjectOfType<PlayerComponent>().gameObject.transform);
-    }
+        => objetArmes[nouvArme].transform.SetParent(FindObjectOfType<PlayerComponent>().gameObject.transform);
 }
