@@ -1,39 +1,52 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using System.Numerics;
-using Matrix4x4 = UnityEngine.Matrix4x4;
-
+using MathNet.Numerics.LinearAlgebra;
 using Vector3 = UnityEngine.Vector3;
 
 public class SplineGenerator : MonoBehaviour
 {
     private List<Vector3> points;
-    private List<Vector3> controlPoints; 
-    public float[] GetCoeff()
+    [SerializeField] private List<Vector3> controlPoints; 
+    public List<float> GetCoeff()
     {
         List<float> composantesPointsControle = new List<float>();
-        controlPoints = new List<Vector3>();
+        List<float> coeffs = new List<float>();
+
         for (int i = 0; i < controlPoints.Count * 2; i += 2)
         {
             composantesPointsControle.Add(controlPoints[i].x);
             composantesPointsControle.Add(controlPoints[i + 1].y);
         }
-        var A = Matrix.Build.DenseOfArray(new double[,] {
-            { 3, 2, -1 },
-            { 2, -2, 4 },
-            { -1, 0.5, -1 }
-        });
-        var b = Vector<double>.Build.Dense(new double[] { 1, -2, 0 });
-        var x = A.Solve(b);
+        var A = Matrix<float>.Build.DenseOfArray(ArrayTo2DimensionalArray(composantesPointsControle.ToArray()));
+        var b = Vector<float>.Build.Dense(new float[] { 1, -2, 0 });
+        var C = A.Solve(b);
+        
+        
+        return coeffs;
+    }
+
+    private T[,] ArrayTo2DimensionalArray<T>(T[] t)
+    {
+        int dimensionalsize = Mathf.RoundToInt(Mathf.Sqrt(t.Length));
+        T[,] tD2 = new T[dimensionalsize, dimensionalsize];
+        for (int i = 0; i < dimensionalsize; i++)
+        {
+            for (int j = 0; j < dimensionalsize; j++)
+            {
+                tD2[i, j] = t[i * j + j];
+            }
+        }
+
+        return tD2;
     }
     
 
     public Vector3[] GetPointsSecondaire()
     {
-        float[] coeffs = GetCoeff();
-        Vector3[] pointsSecondaires = new Vector3[coeffs.Length];
-        for (int i = 0; i < coeffs.Length; i+=8)
+        List<float> coeffs = GetCoeff();
+        Vector3[] pointsSecondaires = new Vector3[coeffs.Count];
+        for (int i = 0; i < coeffs.Count; i+=8)
         {
             for (int j = 0; j < 8; j++)
             {
