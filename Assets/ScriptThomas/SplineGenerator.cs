@@ -2,16 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Numerics;
+using Matrix4x4 = UnityEngine.Matrix4x4;
+
 using Vector3 = UnityEngine.Vector3;
 
 public class SplineGenerator : MonoBehaviour
 {
     private List<Vector3> points;
-    /*
+    private List<Vector3> controlPoints; 
     public float[] GetCoeff()
     {
-        
-        return coeffs;
+        List<float> composantesPointsControle = new List<float>();
+        controlPoints = new List<Vector3>();
+        for (int i = 0; i < controlPoints.Count * 2; i += 2)
+        {
+            composantesPointsControle.Add(controlPoints[i].x);
+            composantesPointsControle.Add(controlPoints[i + 1].y);
+        }
+        var A = Matrix.Build.DenseOfArray(new double[,] {
+            { 3, 2, -1 },
+            { 2, -2, 4 },
+            { -1, 0.5, -1 }
+        });
+        var b = Vector<double>.Build.Dense(new double[] { 1, -2, 0 });
+        var x = A.Solve(b);
     }
     
 
@@ -31,5 +45,5 @@ public class SplineGenerator : MonoBehaviour
         }
         return pointsSecondaires;
     }
-    */
+    
 }

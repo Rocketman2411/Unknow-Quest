@@ -19,7 +19,7 @@ public class TestSplineGenerator : MonoBehaviour
         }
         else
         {
-            t = Mathf.Clamp01(t) * controlPoints.Length;
+            t = Mathf.Clamp01(t) * (controlPoints.Length - 1) / 3;
             i = (int)t;
             t -= i;
             i *= 3;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerComponent : MonoBehaviour
@@ -9,10 +10,17 @@ public class PlayerComponent : MonoBehaviour
     [SerializeField]public int attaque;
     [SerializeField]public Vector3 position;
     public Vector3 positionDépart;
+    private List<PlayerComponent> listeJoueur;
+    public List<GameObject> listeJoueurs2;
 
     private void Awake()
     {
         position = positionDépart = transform.position;
+        listeJoueur = FindObjectsOfType<PlayerComponent>().ToList();
+        for (int i = 0; i < listeJoueur.Count; i++)
+        {
+            listeJoueurs2.Add(listeJoueur[i].gameObject);
+        }
     }
 
     private void Update()
