@@ -24,10 +24,8 @@ namespace ScriptHichem
         {
             _movementDirection = _cameraObject.forward * _inputManager.verticalInput;
             _movementDirection += _cameraObject.right * _inputManager.horizontalInput;
-        
             _movementDirection.Normalize();
             _movementDirection.y = 0;
-
             _movementDirection *= movementSpeed;
 
             Vector3 movementVelocity = _movementDirection;

@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private PlayerInput playerControls;
     
-    private Vector2 movementInput;
+    public Vector2 movementInput;
     public float verticalInput;
     public float horizontalInput;
     
