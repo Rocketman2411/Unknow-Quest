@@ -3,15 +3,40 @@ using System.Linq;
 using MathNet.Numerics;
 using MathNet.Numerics.Interpolation;
 using UnityEngine;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Single;
 using Vector3 = UnityEngine.Vector3;
 using MathNet.Spatial.Euclidean;
-using Unity.Mathematics;
 
 public class SplineGenerator : MonoBehaviour
 {
-    [SerializeField] private List<Vector3> controlPoints; 
+    [SerializeField] private List<Vector3> controlPoints;
+    
+    public Vector3 GetPointSpline(double distance)
+    {
+        var x = controlPoints.Select(p => p.x ).ToArray();
+        var y = controlPoints.Select(p => p.y).ToArray();
+        var z = controlPoints.Select(p => p.z).ToArray();
+        var splineX = CubicSpline.InterpolateNatural(x, y);
+        var splineY = CubicSpline.InterpolateNatural(x, y);
+        var splineZ = CubicSpline.InterpolateNatural(x, z);
+        
+        var derivativeX = splineX.Differentiate();
+        var derivativeY = splineY.Differentiate();
+        var derivativeZ = splineZ.Differentiate();
+        var tangent = new Vector3((float)derivativeX.(distance), (float)derivativeY.Interpolate(distance), (float)derivativeZ.Interpolate(distance)).normalized;
+         return new Vector3((float)splineX.Interpolate(distance), (float)splineY.Interpolate(distance), (float)splineZ.Interpolate(distance)) + tangent;
+    }
+    /*
+    public Vector3 GetSplinePoint(float distance)
+    {
+        GenerateSpline();
+        var derivativeX = splineX.Differentiate();
+        var derivativeY = splineY.Differentiate();
+        var derivativeZ = splineZ.Differentiate();
+        var tangent = new Vector3((float)derivativeX.Interpolate(distance), (float)derivativeY.Interpolate(distance), (float)derivativeZ.Interpolate(distance)).normalized;
+        return new Vector3((float)splineX.Interpolate(distance), (float)splineY.Interpolate(distance), (float)splineZ.Interpolate(distance)) + tangent;
+    }
+*/
+    /*
     public List<double> GetCoeff()
     {
 
@@ -121,7 +146,7 @@ public class SplineGenerator : MonoBehaviour
 
         return coeffs;
     }
-    
+    */
     private T[,] ArrayTo2DimensionalArray<T>(T[] t)
     {
         int dimensionalsize = Mathf.RoundToInt(Mathf.Sqrt(t.Length));
@@ -137,7 +162,7 @@ public class SplineGenerator : MonoBehaviour
         return tD2;
     }
     
-
+/*
     public Vector3[] GetPointsSecondaire()
     {
         List<double> coeffs = GetCoeff();
@@ -155,5 +180,5 @@ public class SplineGenerator : MonoBehaviour
         }
         return pointsSecondaires;
     }
-    
+    */
 }
