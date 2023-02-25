@@ -94,6 +94,34 @@ public partial class @CameraRotation : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""AllPlayerAction"",
+            ""id"": ""cebb0ce6-4b54-42bb-8b3f-c97a5fe993bf"",
+            ""actions"": [
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""289404a4-1167-4192-b08d-c90be2ab6428"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9fae08af-d037-45c4-b072-d660b31232e8"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -101,6 +129,9 @@ public partial class @CameraRotation : IInputActionCollection2, IDisposable
         // Rotation
         m_Rotation = asset.FindActionMap("Rotation", throwIfNotFound: true);
         m_Rotation_RotateKey = m_Rotation.FindAction("RotateKey", throwIfNotFound: true);
+        // AllPlayerAction
+        m_AllPlayerAction = asset.FindActionMap("AllPlayerAction", throwIfNotFound: true);
+        m_AllPlayerAction_Jump = m_AllPlayerAction.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -189,8 +220,45 @@ public partial class @CameraRotation : IInputActionCollection2, IDisposable
         }
     }
     public RotationActions @Rotation => new RotationActions(this);
+
+    // AllPlayerAction
+    private readonly InputActionMap m_AllPlayerAction;
+    private IAllPlayerActionActions m_AllPlayerActionActionsCallbackInterface;
+    private readonly InputAction m_AllPlayerAction_Jump;
+    public struct AllPlayerActionActions
+    {
+        private @CameraRotation m_Wrapper;
+        public AllPlayerActionActions(@CameraRotation wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Jump => m_Wrapper.m_AllPlayerAction_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_AllPlayerAction; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AllPlayerActionActions set) { return set.Get(); }
+        public void SetCallbacks(IAllPlayerActionActions instance)
+        {
+            if (m_Wrapper.m_AllPlayerActionActionsCallbackInterface != null)
+            {
+                @Jump.started -= m_Wrapper.m_AllPlayerActionActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_AllPlayerActionActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_AllPlayerActionActionsCallbackInterface.OnJump;
+            }
+            m_Wrapper.m_AllPlayerActionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+            }
+        }
+    }
+    public AllPlayerActionActions @AllPlayerAction => new AllPlayerActionActions(this);
     public interface IRotationActions
     {
         void OnRotateKey(InputAction.CallbackContext context);
+    }
+    public interface IAllPlayerActionActions
+    {
+        void OnJump(InputAction.CallbackContext context);
     }
 }

@@ -14,6 +14,9 @@ namespace ScriptHichem.PlayerMovement
         [SerializeField] float gravityMultiplier = 2;
         [SerializeField] float groundedGravity = -0.5f;
         [SerializeField] float jumpHeight = 3f;
+
+        [Header("Movement")] 
+        [SerializeField] private bool isJumping;
         float velocityY;
 
         CharacterController controller;
@@ -32,7 +35,7 @@ namespace ScriptHichem.PlayerMovement
         public void HandleAllTypeOfMovement()
         {
             HandleMovement();
-            HandleGravityAndJump();
+            HandleAndJumping();
         }
         private void HandleMovement()
         {
@@ -52,21 +55,9 @@ namespace ScriptHichem.PlayerMovement
             }
         }
 
-        private void HandleGravityAndJump()
+        public void HandleAndJumping()
         {
-            //apply groundedGravity when the Player is Grounded
-            if (controller.isGrounded && velocityY < 0f)
-                velocityY = groundedGravity;
-
-            //When Grounded and Jump Button is Pressed, set veloctiyY with the formula below
-            if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
-            {
-                velocityY = Mathf.Sqrt(jumpHeight * 2f * gravity);
-            }
-
-            //applying gravity when Player is not grounded
-            velocityY -= gravity * gravityMultiplier * Time.deltaTime;
-            controller.Move(Vector3.up * (velocityY * Time.deltaTime));
+            
         }
     }
 }
