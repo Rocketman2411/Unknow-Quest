@@ -41,7 +41,7 @@ public partial class @CameraRotation : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ControllerInpout"",
                     ""id"": ""ac32e708-e6cf-48cd-a582-976f06916540"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -52,7 +52,7 @@ public partial class @CameraRotation : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""09fae680-436e-4121-8662-b82eccee5a51"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

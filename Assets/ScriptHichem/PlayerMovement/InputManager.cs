@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private CameraRotation _cameraRotation;
     
-    Vector2 _rotationInput;
+    public Vector2 _rotationInput;
     
     public float verticalInput;
     public float horizontalInput;
@@ -27,6 +27,10 @@ public class InputManager : MonoBehaviour
         _cameraRotation.Disable();
     }
 
+    public void HandleAllInput()
+    {
+        HandleMovementInput();
+    }
     private void HandleMovementInput()
     {
         verticalInput = _rotationInput.y;

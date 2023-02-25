@@ -21,25 +21,19 @@ namespace ScriptHichem.PlayerMovement
 
         float currentAngle;
         float currentAngleVelocity;
-        
-        //Pour la caméra
-        private CameraManager _camera;
-        
+
         private void Awake()
         {
-            _camera = FindObjectOfType<CameraManager>();
             //getting reference for components on the Player
             controller = GetComponent<CharacterController>();
             cam = Camera.main;
         }
-
-        private void Update()
+        
+        public void HandleAllTypeOfMovement()
         {
             HandleMovement();
             HandleGravityAndJump();
-            _camera.RotateCamera();
         }
-        
         private void HandleMovement()
         {
             //capturing Input from Player
@@ -58,7 +52,7 @@ namespace ScriptHichem.PlayerMovement
             }
         }
 
-        void HandleGravityAndJump()
+        private void HandleGravityAndJump()
         {
             //apply groundedGravity when the Player is Grounded
             if (controller.isGrounded && velocityY < 0f)
