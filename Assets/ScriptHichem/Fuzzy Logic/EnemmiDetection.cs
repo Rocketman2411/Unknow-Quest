@@ -3,28 +3,37 @@ using UnityEngine;
 
 namespace ScriptHichem.Fuzzy_Logic
 {
-    public class EnemmiDetection : MonoBehaviour
+    public class EnemmiAttackManager : MonoBehaviour
     {
-        [SerializeField] GameObject ennemi;
-        [SerializeField] GameObject player;
+        [SerializeField] GameObject ennemiObject;
+        [SerializeField] GameObject playerObject;
 
+        //Variable pour la detection du Player
+        private Transform target;
         private Vector3 _ennemiPosition;
         private Vector3 _playerPosition;
         
-        private double _ennemiRange = 5;
+        private double _radarRange = 5;
         private double _distance;
-        
+
+        private EnnemiScriptComponent _ennemiScriptComponent;
+        private bool lifeState;
+        private float speed = 2;
+
         private void Awake()
         {
-            
-            //À voir comment trouver la position d'un objet
-            _ennemiPosition = ennemi.transform.position;
-            _playerPosition = player.transform.position;
-
-            _distance = PlayerDistance(_ennemiPosition,_playerPosition);
+            _ennemiScriptComponent = FindObjectOfType<EnnemiScriptComponent>();
+            target = playerObject.transform;
         }
 
-        //calcule distance entre l'ennemie et le joueur
+        private bool LifeScanner()
+        {
+            if (_ennemiScriptComponent.life == 100)
+            {
+                
+            }
+        }
+        
         private double PlayerDistance(Vector3 posE, Vector3 posP)
         {
             double z = Math.Abs(posE.z) - Math.Abs(posP.z);
@@ -34,10 +43,40 @@ namespace ScriptHichem.Fuzzy_Logic
         }
         void Update()
         {
-            if ( _distance <= _ennemiRange )
+            _ennemiPosition = ennemiObject.transform.position;
+            _playerPosition = playerObject.transform.position;
+            
+            //Calcule distance à chauqe frame
+            _distance = PlayerDistance(_ennemiPosition, _playerPosition);
+            
+            if ( _distance <= _radarRange)
             {
-                Debug.Log("Player DETECTED");
+                if (_ennemiScriptComponent.life == 100)
+                {
+                    ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
+                                                                                target.position, 
+                                                                   speed * Time.deltaTime);
+                }
+                else
+                {
+                    if (_ennemiScriptComponent.life < 100 && _ennemiScriptComponent.life > 80 )
+                    {
+                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
+                                                                                    target.position, 
+                                                                       ((speed*0.8f) * Time.deltaTime));
+                    }
+
+                    if (_ennemiScriptComponent.life < 80 && _ennemiScriptComponent.life > 50)
+                    {
+                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
+                                                                                    target.position, 
+                                                                     ((speed*0.5f) * Time.deltaTime));
+                    }
+                }
+                
             }
+            
+            
         }
     }
 }
