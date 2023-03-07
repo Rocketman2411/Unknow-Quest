@@ -25,14 +25,6 @@ namespace ScriptHichem.Fuzzy_Logic
             _ennemiScriptComponent = FindObjectOfType<EnnemiScriptComponent>();
             target = playerObject.transform;
         }
-
-        private bool LifeScanner()
-        {
-            if (_ennemiScriptComponent.life == 100)
-            {
-                
-            }
-        }
         
         private double PlayerDistance(Vector3 posE, Vector3 posP)
         {
