@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Packages/MathNet.Spatial.0.6.0.meta
 guid: 974b43c5254197e43b28b3c9d1f73b1e
+========
+guid: fa11fe015f5dfe4489d62decb47303d2
+>>>>>>>> 98dadda44cb47daa1060f2a4e52aecd6e3acdeef:Assets/Packages/System.Diagnostics.Contracts.4.3.0.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

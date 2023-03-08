@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Packages/System.Diagnostics.Contracts.4.3.0.meta
 guid: 77da1645c18b0cb418c63e74d3426550
+========
+guid: 91522077bb65ce7499bcb91952595268
+>>>>>>>> 98dadda44cb47daa1060f2a4e52aecd6e3acdeef:Assets/Packages/System.Diagnostics.Contracts.4.3.0/lib/netstandard1.0.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

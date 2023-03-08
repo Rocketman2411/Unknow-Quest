@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Blink.meta
 guid: 11f53ca79aa3c534096a9bbe286caad9
+========
+guid: 822aae507e90d704795830aa9c9303f9
+>>>>>>>> 98dadda44cb47daa1060f2a4e52aecd6e3acdeef:Assets/Packages/MathNet.Spatial.0.6.0.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
