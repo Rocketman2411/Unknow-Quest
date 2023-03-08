@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 
@@ -12,46 +13,89 @@ public class ArmeComponent : MonoBehaviour
     private List<ArmeComponent> armes;
     private List<GameObject> objetArmes;
     private ArmeComponent[] armesEnCoursUtilisation;
-    
-    [SerializeField]private int armeRemplace1;
-    [SerializeField] private int armeRemplace2;
-    
+    private ArmeComponent arme1;
+    private ArmeComponent arme2;
+    private GameObject armesNonUtilisésParent;
+    private int armeRemplace1;
+    private int armeRemplace2;
+
+    private PlayerComponent joueur1;
+    private PlayerComponent joueur2;
     private List<PlayerComponent> joueurs;
     private List<float> distanceArmes1;
     private List<float> distanceArmes2;
-    public GameObject parentArmeDiscartée;
+    private GameObject parentArmeDiscartée;
+    private bool estMultiJoueur;
     private void Awake()
     {
+        armesNonUtilisésParent = new GameObject();
+        armesNonUtilisésParent.transform.position = new Vector3(0, 0, 0);
+        estMultiJoueur = SceneManager.GetActiveScene().path.Contains("Coop");
+        if (estMultiJoueur)
+        {
+            armesEnCoursUtilisation = new ArmeComponent[2];
+            
+            distanceArmes2 = new List<float>();
+            joueurs = FindObjectsOfType<PlayerComponent>().ToList();
+            joueur1 = joueurs[0];
+            joueur2 = joueurs[1];
+        }
+        else
+        {
+            armesEnCoursUtilisation = new ArmeComponent[1];
+            joueur1 = FindObjectOfType<PlayerComponent>();
+        }
+        objetArmes = new List<GameObject>();
         armes = FindObjectsOfType<ArmeComponent>().ToList();
         foreach (var arme in armes)
+        {
             objetArmes.Add(arme.gameObject);
-        joueurs = FindObjectsOfType<PlayerComponent>().ToList();
+            if (arme.transform.parent == null)
+            {
+                arme.transform.parent = armesNonUtilisésParent.transform;
+            }
+        }
+        
         distanceArmes1 = new List<float>();
-        distanceArmes2 = new List<float>();
     }
 
     private void Update()
     {
-        armesEnCoursUtilisation = new ArmeComponent[2];
-        armesEnCoursUtilisation[0] = joueurs[0].GetComponentInChildren<ArmeComponent>();
-        armesEnCoursUtilisation[1] = joueurs[1].GetComponentInChildren<ArmeComponent>();
+        float armeLaPlusProche1;
+        float armeLaPlusProche2;
+        Vector3 positionJoueur1 = joueur1.transform.position;
+        arme1 = joueur1.GetComponentInChildren<ArmeComponent>();
         for (int i = 0; i < objetArmes.Count; i++)
         {
-            distanceArmes1.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- joueurs[0].transform.position.x,2) +
-                               Mathf.Pow(objetArmes[i].transform.position.y- joueurs[0].transform.position.y,2) +
-                               Mathf.Pow(objetArmes[i].transform.position.z- joueurs[0].transform.position.z,2)));
+            distanceArmes1.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- positionJoueur1.x,2) +
+                               Mathf.Pow(objetArmes[i].transform.position.y- positionJoueur1.y,2) +
+                               Mathf.Pow(objetArmes[i].transform.position.z- positionJoueur1.z,2)));
         }
-        float armeLaPlusProche1 = Mathf.Min(distanceArmes1.ToArray());
-        armeRemplace1 = distanceArmes1.FindIndex(x =>  x >= armeLaPlusProche1 - 0.001f && x <= armeLaPlusProche1 + 0.001f);
-        
-        for (int i = 0; i < objetArmes.Count; i++)
+        armeLaPlusProche1 = Mathf.Min(distanceArmes1.ToArray());
+        if (Input.GetKeyDown("e") && armeLaPlusProche1 < 1)
         {
-            distanceArmes2.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- joueurs[1].transform.position.x,2) +
-                                          Mathf.Pow(objetArmes[i].transform.position.y- joueurs[1].transform.position.y,2) +
-                                          Mathf.Pow(objetArmes[i].transform.position.z- joueurs[1].transform.position.z,2)));
+            
+            armeRemplace1 = distanceArmes1.FindIndex(x =>  x >= armeLaPlusProche1 - 0.001f && x <= armeLaPlusProche1 + 0.001f);
+            RemplacerArme1(armeRemplace1);
         }
-        float armeLaPlusProche2 = Mathf.Min(distanceArmes2.ToArray());
-        armeRemplace2 = distanceArmes2.FindIndex(x =>  x >= armeLaPlusProche2 - 0.001f && x <= armeLaPlusProche2 + 0.001f);
+        if (estMultiJoueur)
+        {
+            arme2 = joueur2.GetComponentInChildren<ArmeComponent>();
+            Vector3 positionJoueur2 = joueur2.transform.position;
+            
+            for (int i = 0; i < objetArmes.Count; i++)
+            {
+                distanceArmes2.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- positionJoueur2.x,2) +
+                                              Mathf.Pow(objetArmes[i].transform.position.y- positionJoueur2.y,2) +
+                                              Mathf.Pow(objetArmes[i].transform.position.z- positionJoueur2.z,2)));
+            }
+            armeLaPlusProche2 = Mathf.Min(distanceArmes2.ToArray());
+            if (Input.GetKeyDown("r") && armeLaPlusProche2 < 1)
+            {
+                armeRemplace2 = distanceArmes2.FindIndex(x =>  x >= armeLaPlusProche2 - 0.001f && x <= armeLaPlusProche2 + 0.001f);
+                RemplacerArme2(armeRemplace2);
+            }
+        }
         
         GameObject[] os = FindObjectsOfType<GameObject>();
         
@@ -62,19 +106,11 @@ public class ArmeComponent : MonoBehaviour
                 parentArmeDiscartée = o;
             }
         }
-        
-        if(Input.GetKeyDown("e") && armeLaPlusProche1 < 2 )
-            RemplacerArme1(armeRemplace1);
-        if(Input.GetKeyDown("e") && armeLaPlusProche2 < 2)
-            RemplacerArme2(armeRemplace2);
     }
-
-
-
     public void RemplacerArme1(int nouvArme)
     {
         objetArmes[nouvArme].transform.position = armesEnCoursUtilisation[0].gameObject.transform.position;
-        objetArmes[nouvArme].transform.parent = joueurs[0].gameObject.transform;
+        objetArmes[nouvArme].transform.parent = joueur1.transform;
         armesEnCoursUtilisation[0].gameObject.transform.parent = parentArmeDiscartée.transform;
     }
 

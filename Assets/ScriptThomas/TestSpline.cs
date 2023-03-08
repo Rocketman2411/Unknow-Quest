@@ -8,7 +8,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class TestSpline : MonoBehaviour
 {
-    [SerializeField] private double distance = 0.0001;
+    [SerializeField] private double distance = 1;
     private SplineGenerator _splineGenerator;
     private Rigidbody _rigidbody;
 
@@ -24,13 +24,13 @@ public class TestSpline : MonoBehaviour
         float x = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).x;
         float y = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).y;
         float z = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).z;
-        
+        Debug.Log($"x = {x}, y = {y}, z = {z} ");
         /*
         float x = transform.position.x;
         float y =transform.position.y;
         float z = transform.position.z;*/
-        transform.position = Vector3.MoveTowards(gameObject.transform.position,_splineGenerator.GetPointSpline(distance), 10);
+        transform.position = new Vector3(x, y, z);
         //Debug.Log($"x: {x}, y = {y}, z = {z}");
-        
+
     }
 }

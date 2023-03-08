@@ -22,13 +22,14 @@ public class SplineGenerator : MonoBehaviour
     private List<float> ptsSplineZ;
     private List<float> coeffsz;
 
-    private void CréerListePointsControle()
+    /*private void CréerListePointsControle()
     {
         for (int i = 0; i < 10; i++)
         {
-            ptsControle.Add(new Vector3(Mathf.Pow(i,2),Mathf.Pow(i + 1,2),Mathf.Pow(i + 2,2))); // À changer
+            ptsControle.Add(new Vector3(Mathf.Pow(i,2),Mathf.Pow(i ,2),Mathf.Pow(i ,2))); // À changer
         }
     }
+    */
 /*
     public List<Vector3> GetPointsSecondaire()
     {
@@ -50,7 +51,7 @@ public class SplineGenerator : MonoBehaviour
     */
     public Vector3 GetPointSpline(double distance)
     {
-        CréerListePointsControle();
+        
         double[] x0 = ptsControle.Select(p => (double)p.x).ToArray();
         double[] y0 = ptsControle.Select(p => (double)p.y).ToArray();
         double[] z0 = ptsControle.Select(p => (double)p.z).ToArray();
