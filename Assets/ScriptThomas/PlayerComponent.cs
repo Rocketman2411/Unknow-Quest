@@ -44,7 +44,7 @@ public class PlayerComponent : MonoBehaviour
 
     private void Update()
     {
-        ennemis = e.ennemisÀJour.;
+        //ennemis = e.ennemisÀJour.;
         position = transform.position;
         if(life <= 0 && difficulté == 1)
             RespawnerAprèsMort();
@@ -52,9 +52,8 @@ public class PlayerComponent : MonoBehaviour
         {
             SceneManager.LoadScene(currentLevel);
         }
-        if (Input.GetMouseButton(0) && )
+        if (Input.GetMouseButton(0))
         {
-            
             estEnModeAttaque[0] = true;
         }
     }

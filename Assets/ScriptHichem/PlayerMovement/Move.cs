@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,11 +10,11 @@ namespace ScriptHichem.PlayerMovement
         [SerializeField] float speed;
         [SerializeField] float rotationSmoothTime;
 
-        [Header("Gravity")]
-        [SerializeField] float gravity = 9.8f;
-        [SerializeField] float gravityMultiplier = 2;
-        [SerializeField] float groundedGravity = -0.5f;
-        [SerializeField] float jumpHeight = 3f;
+        //[Header("Gravity")]
+        //[SerializeField] float gravity = 9.8f;
+        //[SerializeField] float gravityMultiplier = 2;
+        //[SerializeField] float groundedGravity = -0.5f;
+        //[SerializeField] float jumpHeight = 3f;
 
         [Header("Movement")] 
         [SerializeField] private bool isJumping;
@@ -25,10 +26,19 @@ namespace ScriptHichem.PlayerMovement
         float currentAngle;
         float currentAngleVelocity;
 
+        private Animator _animator;
+
+        private void Start()
+        {
+            _animator = GetComponent<Animator>();
+        }
+
         private void Awake()
         {
             //getting reference for components on the Player
             controller = GetComponent<CharacterController>();
+            controller.height = 0f;
+            controller.radius = 0f;
             cam = Camera.main;
         }
         
@@ -44,14 +54,19 @@ namespace ScriptHichem.PlayerMovement
 
             if (movement.magnitude >= 0.1f)
             {
+                _animator.SetBool("IsMoving", true);
                 //compute rotation
-                float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+                float targetAngle = Mathf.Atan2(movement.x,movement.z ) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
                 currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
                 transform.rotation = Quaternion.Euler(0, currentAngle, 0);
 
                 //move in direction of rotation
                 Vector3 rotatedMovement = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
                 controller.Move(rotatedMovement * (speed * Time.deltaTime));
+            }
+            else
+            {
+                _animator.SetBool("IsMoving", false);
             }
         }
 
