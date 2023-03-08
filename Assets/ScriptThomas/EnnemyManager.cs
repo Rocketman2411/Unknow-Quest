@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class EnnemyManager : MonoBehaviour
 {
-    private List<GameObject> ennemis;
+    public List<EnnemiScriptComponent> ennemis;
+    public List<EnnemiScriptComponent> ennemisÀJour;
     
     [SerializeField] public int difficulté = 1;
-    private List<float> distancesAvecJoueur1;
-    private List<float> distancesAvecJoueur2;
+    public List<float> distancesAvecJoueur1;
+    public List<float> distancesAvecJoueur2;
 
     private void Awake()
     {
         distancesAvecJoueur1 = new List<float>();
         distancesAvecJoueur2 = new List<float>();
-        ennemis = new List<GameObject>();
+        ennemis = new List<EnnemiScriptComponent>();
         
         foreach (var ennemi in FindObjectsOfType<EnnemiScriptComponent>())
         {
-            ennemis.Add(ennemi.gameObject);
+            ennemis.Add(ennemi);
             distancesAvecJoueur1.Add(ennemi.CalculerDistanceAvecPlayers()[0]);
             distancesAvecJoueur2.Add(ennemi.CalculerDistanceAvecPlayers()[1]);
         }
@@ -27,7 +28,7 @@ public class EnnemyManager : MonoBehaviour
 
     private void Update()
     {
-        List<GameObject> ennemisÀJour = ennemis.FindAll(x => x.GetComponent<EnnemiScriptComponent>().life > 0);
+        ennemisÀJour = ennemis.FindAll(x => x.GetComponent<EnnemiScriptComponent>().life > 0);
         List<float> distances1ÀJour = new List<float>();
         List<float> distances2ÀJour = new List<float>();
         for (int i = 0; i < ennemisÀJour.Count; i++)
