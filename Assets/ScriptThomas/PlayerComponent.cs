@@ -54,7 +54,6 @@ public class PlayerComponent : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            
             estEnModeAttaque[0] = true;
         }
     }
