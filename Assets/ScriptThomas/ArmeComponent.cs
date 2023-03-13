@@ -26,38 +26,7 @@ public class ArmeComponent : MonoBehaviour
     private List<float> distanceArmes2;
     private GameObject parentArmeDiscartée;
     private bool estMultiJoueur;
-    private void Awake()
-    {
-        armesNonUtilisésParent = new GameObject();
-        armesNonUtilisésParent.transform.position = new Vector3(0, 0, 0);
-        estMultiJoueur = SceneManager.GetActiveScene().path.Contains("Coop");
-        if (estMultiJoueur)
-        {
-            armesEnCoursUtilisation = new ArmeComponent[2];
-            
-            distanceArmes2 = new List<float>();
-            joueurs = FindObjectsOfType<PlayerComponent>().ToList();
-            joueur1 = joueurs[0];
-            joueur2 = joueurs[1];
-        }
-        else
-        {
-            armesEnCoursUtilisation = new ArmeComponent[1];
-            joueur1 = FindObjectOfType<PlayerComponent>();
-        }
-        objetArmes = new List<GameObject>();
-        armes = FindObjectsOfType<ArmeComponent>().ToList();
-        foreach (var arme in armes)
-        {
-            objetArmes.Add(arme.gameObject);
-            if (arme.transform.parent == null)
-            {
-                arme.transform.parent = armesNonUtilisésParent.transform;
-            }
-        }
-        
-        distanceArmes1 = new List<float>();
-    }
+    
 
     private void Update()
     {
@@ -106,6 +75,11 @@ public class ArmeComponent : MonoBehaviour
                 parentArmeDiscartée = o;
             }
         }
+    }
+
+    float CalculerDistance()
+    {
+        
     }
     public void RemplacerArme1(int nouvArme)
     {

@@ -12,6 +12,7 @@ public class EnnemiScriptComponent : MonoBehaviour
     [SerializeField]private Vector3 positionEnnemi;
     private List<PlayerComponent> joueurs;
     private int difficulté;
+    private bool estMultijoueur;
 
     private void Awake()
     {
@@ -20,6 +21,11 @@ public class EnnemiScriptComponent : MonoBehaviour
         if (difficulté == 3)
         {
             attaque *= 1.2f;
+        }
+
+        if (joueurs.Count != 1)
+        {
+            estMultijoueur = true;
         }
     }
 
@@ -37,7 +43,14 @@ public class EnnemiScriptComponent : MonoBehaviour
             c.otherCollider.gameObject.GetComponent<PlayerComponent>().life -= attaque;
     }
 
-    public float[] CalculerDistanceAvecPlayers()
+    public float CalculerDistanceSolo()
+    {
+        float distanceAvecJoueur1 = Mathf.Sqrt(Mathf.Pow(positionEnnemi.x - joueurs[0].position.x, 2) +
+                                               Mathf.Pow(positionEnnemi.y - joueurs[0].position.y, 2) +
+                                               Mathf.Pow(positionEnnemi.z - joueurs[0].position.z, 2));
+        return distanceAvecJoueur1;
+    }
+    public float[] CalculerDistanceCoop()
     {
         float distanceAvecJoueur1 = Mathf.Sqrt(Mathf.Pow(positionEnnemi.x - joueurs[0].position.x, 2) +
                                     Mathf.Pow(positionEnnemi.y - joueurs[0].position.y, 2) +
