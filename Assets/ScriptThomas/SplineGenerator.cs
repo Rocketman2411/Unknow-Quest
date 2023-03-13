@@ -2,43 +2,43 @@ using UnityEngine;
 
 public class SplineGenerator : MonoBehaviour
 {
-    public Vector3[] pointsControl;
+        public Vector3[] pointsControles;
         public int res = 10;
-        public bool loop = false;
-    
         private Vector3[] points;
-        private int segments;
-    
+        private int bouttes;
+        public bool loop;
         void Awake() 
         {
-            segments = pointsControl.Length - 1;
-            points = new Vector3[res * segments + 1];
+            bouttes = pointsControles.Length - 1;
+            points = new Vector3[res * bouttes + 1];
     
-            for (int i = 0; i < segments; i++) {
+            for (int i = 0; i < bouttes; i++) {
                 for (int j = 0; j < res; j++) {
                     float t = (float) j / res;
-                    Vector3 point1 = pointsControl[i];
-                    Vector3 point2 = pointsControl[i + 1];
-                    Vector3 tangent = (point2 - point1).normalized;
+                    Vector3 point1 = pointsControles[i];
+                    Vector3 point2 = pointsControles[i + 1];
+                    Vector3 tangente = (point2 - point1).normalized;
                     float coeff1 = 2 * t * t * t - 3 * t * t + 1;
                     float coeff2 = t * t * t - 2 * t * t + t;
                     float coeff3 = -2 * t * t * t + 3 * t * t;
                     float coeff4 = t * t * t - t * t;
-                    
-                    points[i * res + j] = coeff1 * point1 + coeff2 * tangent + coeff3 * point2 + coeff4 * tangent;
+                    points[i * res + j] = coeff1 * point1 + coeff2 * tangente + coeff3 * point2 + coeff4 * tangente;
                 }
             }
-            points[res * segments] = pointsControl[segments];
+
+            if (loop)
+                points[points.Length - 1] = pointsControles[0];
+            else
+                points[points.Length - 1] = pointsControles[bouttes];
+                
         }
-        public Vector3 GetPoint(float t) 
+        public Vector3 TrouverPoint(float t) 
         {
             if (t >= 1)
-            {
                 t = 0.999999f;
-            }
-            int segment = Mathf.FloorToInt(t * segments);
-            int index = Mathf.Clamp(segment * res, 0, points.Length - 1);
-            float segmentT = (t - (float) segment / segments) * segments;
-            return Vector3.Lerp(points[index], points[index + 1], segmentT * res - index);
+            int boutteNuméro = Mathf.FloorToInt(t * bouttes);
+            int i = Mathf.Clamp(boutteNuméro * res, 0, points.Length - 1);
+            float boutteTemps = (t - (float) boutteNuméro / bouttes) * bouttes;
+            return Vector3.Lerp(points[i], points[i + 1], boutteTemps * res - i);
         }
 }

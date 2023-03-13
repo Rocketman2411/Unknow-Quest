@@ -8,28 +8,25 @@ using Vector3 = UnityEngine.Vector3;
 
 public class TestSpline : MonoBehaviour
 {
-    public Vector3[] controlPointsPositions;
-    public int resolution = 10;
+    public Vector3[] pointsControlesTest;
+    public int res = 10;
     public bool loop = false;
-    public float speed = 1f;
-
+    public float vitesse = 1f;
     private SplineGenerator spline;
     private float t = 0f;
-
-    void Start() 
+    void Awake() 
     {
-        spline = gameObject.AddComponent<SplineGenerator>();
-        spline.pointsControl = controlPointsPositions;
-        spline.res = resolution;
+        spline = gameObject.GetComponent<SplineGenerator>();
+        spline.pointsControles = pointsControlesTest;
+        spline.res = res;
         spline.loop = loop;
     }
-
     void Update() 
     {
-        t += speed * Time.deltaTime;
-        if (t > 1f && loop) 
-            t -= 1f;
-        gameObject.transform.position = spline.GetPoint(t);
-        gameObject.transform.LookAt(spline.GetPoint(t + 0.1f));
+        t += vitesse * Time.deltaTime;
+        if (loop && t > 1)
+            t = 0f;
+        gameObject.transform.position = spline.TrouverPoint(t);
+        gameObject.transform.LookAt(spline.TrouverPoint(t + 0.1f));
     }
 }
