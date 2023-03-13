@@ -8,29 +8,28 @@ using Vector3 = UnityEngine.Vector3;
 
 public class TestSpline : MonoBehaviour
 {
-    [SerializeField] private double distance = 1;
-    private SplineGenerator _splineGenerator;
-    private Rigidbody _rigidbody;
+    public Vector3[] controlPointsPositions;
+    public int resolution = 10;
+    public bool loop = false;
+    public float speed = 1f;
 
-    private void Awake()
+    private SplineGenerator spline;
+    private float t = 0f;
+
+    void Start() 
     {
-        _rigidbody = gameObject.GetComponent<Rigidbody>();
-        _splineGenerator = FindObjectOfType<SplineGenerator>();
+        spline = gameObject.AddComponent<SplineGenerator>();
+        spline.pointsControl = controlPointsPositions;
+        spline.resolution = resolution;
+        spline.loop = loop;
     }
 
-    private void Update()
+    void Update() 
     {
-        
-        float x = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).x;
-        float y = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).y;
-        float z = Vector3.MoveTowards(gameObject.transform.position, _splineGenerator.GetPointSpline(distance), 10).z;
-        Debug.Log($"x = {x}, y = {y}, z = {z} ");
-        /*
-        float x = transform.position.x;
-        float y =transform.position.y;
-        float z = transform.position.z;*/
-        transform.position = new Vector3(x, y, z);
-        //Debug.Log($"x: {x}, y = {y}, z = {z}");
-
+        t += speed * Time.deltaTime;
+        if (t > 1f && loop) 
+            t -= 1f;
+        gameObject.transform.position = spline.GetPoint(t);
+        gameObject.transform.LookAt(spline.GetPoint(t + 0.1f));
     }
 }
