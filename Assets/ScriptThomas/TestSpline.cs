@@ -20,7 +20,7 @@ public class TestSpline : MonoBehaviour
     {
         spline = gameObject.AddComponent<SplineGenerator>();
         spline.pointsControl = controlPointsPositions;
-        spline.resolution = resolution;
+        spline.res = resolution;
         spline.loop = loop;
     }
 
