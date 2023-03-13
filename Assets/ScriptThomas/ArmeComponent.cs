@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -10,88 +11,45 @@ using UnityEngine.UIElements;
 
 public class ArmeComponent : MonoBehaviour
 {
-    private List<ArmeComponent> armes;
-    private List<GameObject> objetArmes;
-    private ArmeComponent[] armesEnCoursUtilisation;
-    private ArmeComponent arme1;
-    private ArmeComponent arme2;
-    private GameObject armesNonUtilisésParent;
-    private int armeRemplace1;
-    private int armeRemplace2;
+    private GérerArmes armeManager;
+    private int armeRemplacée1;
+    private int armeRemplacée2;
 
-    private PlayerComponent joueur1;
-    private PlayerComponent joueur2;
-    private List<PlayerComponent> joueurs;
-    private List<float> distanceArmes1;
-    private List<float> distanceArmes2;
-    private GameObject parentArmeDiscartée;
-    private bool estMultiJoueur;
-    
+    private void Awake()
+    {
+        armeManager = FindObjectOfType<GérerArmes>();
+        
+    }
 
     private void Update()
     {
-        float armeLaPlusProche1;
-        float armeLaPlusProche2;
-        Vector3 positionJoueur1 = joueur1.transform.position;
-        arme1 = joueur1.GetComponentInChildren<ArmeComponent>();
-        for (int i = 0; i < objetArmes.Count; i++)
+        if (armeManager.estMultiJoueur && gameObject.transform.parent.gameObject.name == "Joueur2" && Input.GetKeyDown("r") && armeManager.armeLaPlusProche2 < 1)
         {
-            distanceArmes1.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- positionJoueur1.x,2) +
-                               Mathf.Pow(objetArmes[i].transform.position.y- positionJoueur1.y,2) +
-                               Mathf.Pow(objetArmes[i].transform.position.z- positionJoueur1.z,2)));
+            armeRemplacée2 = armeManager.distanceArmes2.FindIndex(x =>  x >= armeManager.armeLaPlusProche2 - 0.001f && x <= armeManager.armeLaPlusProche2 + 0.001f);
+            RemplacerArme2(armeRemplacée2);
         }
-        armeLaPlusProche1 = Mathf.Min(distanceArmes1.ToArray());
-        if (Input.GetKeyDown("e") && armeLaPlusProche1 < 1)
+        if (gameObject.transform.parent.gameObject.name == "Joueur1" && Input.GetKeyDown("e") && armeManager.armeLaPlusProche1 < 2)
         {
             
-            armeRemplace1 = distanceArmes1.FindIndex(x =>  x >= armeLaPlusProche1 - 0.001f && x <= armeLaPlusProche1 + 0.001f);
-            RemplacerArme1(armeRemplace1);
-        }
-        if (estMultiJoueur)
-        {
-            arme2 = joueur2.GetComponentInChildren<ArmeComponent>();
-            Vector3 positionJoueur2 = joueur2.transform.position;
-            
-            for (int i = 0; i < objetArmes.Count; i++)
-            {
-                distanceArmes2.Add(Mathf.Sqrt(Mathf.Pow(objetArmes[i].transform.position.x- positionJoueur2.x,2) +
-                                              Mathf.Pow(objetArmes[i].transform.position.y- positionJoueur2.y,2) +
-                                              Mathf.Pow(objetArmes[i].transform.position.z- positionJoueur2.z,2)));
-            }
-            armeLaPlusProche2 = Mathf.Min(distanceArmes2.ToArray());
-            if (Input.GetKeyDown("r") && armeLaPlusProche2 < 1)
-            {
-                armeRemplace2 = distanceArmes2.FindIndex(x =>  x >= armeLaPlusProche2 - 0.001f && x <= armeLaPlusProche2 + 0.001f);
-                RemplacerArme2(armeRemplace2);
-            }
-        }
-        
-        GameObject[] os = FindObjectsOfType<GameObject>();
-        
-        foreach (var o in os)
-        {
-            if (o.layer == 10)
-            {
-                parentArmeDiscartée = o;
-            }
+            armeRemplacée1 = armeManager.distanceArmes1.FindIndex(x =>  x >= armeManager.armeLaPlusProche1 - 0.01f && x <= armeManager.armeLaPlusProche1 + 0.01f);
+            Debug.Log($"nom1 = {armeManager.arme1.name}");
+            RemplacerArme1(armeRemplacée1);
         }
     }
-
-    float CalculerDistance()
-    {
-        
-    }
+    
     public void RemplacerArme1(int nouvArme)
     {
-        objetArmes[nouvArme].transform.position = armesEnCoursUtilisation[0].gameObject.transform.position;
-        objetArmes[nouvArme].transform.parent = joueur1.transform;
-        armesEnCoursUtilisation[0].gameObject.transform.parent = parentArmeDiscartée.transform;
+        armeManager.objetArmes[nouvArme].transform.position = armeManager.arme1.gameObject.transform.position;
+        armeManager.objetArmes[nouvArme].transform.SetParent(armeManager.joueur1.transform);
+        armeManager.arme1.gameObject.transform.SetParent(armeManager.armesNonUtilisésParent.transform);
+        armeManager.arme1 = armeManager.objetArmes[nouvArme].GetComponent<ArmeComponent>();
+        Debug.Log($"nom2 = {armeManager.arme1.name}");
     }
 
     public void RemplacerArme2(int nouvArme)
     {
-        objetArmes[nouvArme].transform.position = armesEnCoursUtilisation[1].gameObject.transform.position;
-        objetArmes[nouvArme].transform.parent = joueurs[1].gameObject.transform;
-        armesEnCoursUtilisation[1].gameObject.transform.parent = parentArmeDiscartée.transform;
+        armeManager.objetArmes[nouvArme].transform.position = armeManager.armesEnCoursUtilisation[1].gameObject.transform.position;
+        armeManager.objetArmes[nouvArme].transform.parent = armeManager.joueurs[1].gameObject.transform;
+        armeManager.armesEnCoursUtilisation[1].gameObject.transform.parent = armeManager.armesNonUtilisésParent.transform;
     }
 }
