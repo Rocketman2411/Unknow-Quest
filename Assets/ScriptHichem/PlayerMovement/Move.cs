@@ -9,7 +9,7 @@ namespace ScriptHichem.PlayerMovement
         [Header("Movement")]
         [SerializeField] float speed;
         [SerializeField] float rotationSmoothTime;
-
+        
         //[Header("Gravity")]
         //[SerializeField] float gravity = 9.8f;
         //[SerializeField] float gravityMultiplier = 2;

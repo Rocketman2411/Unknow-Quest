@@ -23,6 +23,11 @@ public class ActionInput : MonoBehaviour
         _playerAction.Enable();
     }
 
+    private void OnDisable()
+    {
+        _playerAction.Disable();
+    }
+
     private void Attack()
     {
         _playerAttack.Attaking();

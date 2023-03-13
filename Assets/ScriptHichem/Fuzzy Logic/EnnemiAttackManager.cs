@@ -14,17 +14,16 @@ namespace ScriptHichem.Fuzzy_Logic
         private Vector3 _ennemiPosition;
         private Vector3 _playerPosition;
         
-        [Header("Détection")]
-        [SerializeField] double _radarRange = 5;
         private double _distance;
         
         //Variable pour la vitesse du follow
         private EnnemiScriptComponent _ennemiScriptComponent;
-        private float speed = 3;
+        private AttackFolowEnnemi _action;
 
         private void Awake()
         {
             _ennemiScriptComponent = FindObjectOfType<EnnemiScriptComponent>();
+            _action = FindObjectOfType<AttackFolowEnnemi>();
             target = playerObject.transform;
         }
 
@@ -43,50 +42,10 @@ namespace ScriptHichem.Fuzzy_Logic
             
             //Calcule distance à chauqe frame
             _distance = PlayerDistance(_ennemiPosition, _playerPosition);
-
-            if ( _distance <= _radarRange)
-            {
-                if (_ennemiScriptComponent.life == 100)
-                {
-                    ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
-                        target.position, 
-                        speed * Time.deltaTime);
-                }
-                else
-                {
-                    if (_ennemiScriptComponent.life < 100 && _ennemiScriptComponent.life > 80 )
-                    {
-                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
-                            target.position, 
-                            ((speed*0.8f) * Time.deltaTime));
-                    }
             
-                    if (_ennemiScriptComponent.life < 80 && _ennemiScriptComponent.life > 50)
-                    {
-                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
-                            target.position, 
-                            ((speed*0.5f) * Time.deltaTime));
-                    }
-                            
-                    if (_ennemiScriptComponent.life < 50 && _ennemiScriptComponent.life > 30)
-                    {
-                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
-                            target.position, 
-                            ((speed*0.4f) * Time.deltaTime));
-                    }
-                            
-                    if (_ennemiScriptComponent.life < 30)
-                    {
-                        ennemiObject.transform.position = Vector3.MoveTowards(ennemiObject.transform.position,
-                            target.position, 
-                            ((speed*0.3f) * Time.deltaTime));
-                    }
-                }
-            }
-            if (_ennemiScriptComponent.life == 0)
-            {
-                Destroy(ennemiObject);
-            }
+            //Gère le déplacement de l'ennemi vers le player 
+            _action.EnnemiFollow(_distance,ennemiObject,target);
+            
         }
     }
 }
