@@ -77,10 +77,10 @@ public class ArmeComponent : MonoBehaviour
         }
     }
 
-    float CalculerDistance()
-    {
+    //float CalculerDistance()
+    //{
         
-    }
+    //}
     public void RemplacerArme1(int nouvArme)
     {
         objetArmes[nouvArme].transform.position = armesEnCoursUtilisation[0].gameObject.transform.position;

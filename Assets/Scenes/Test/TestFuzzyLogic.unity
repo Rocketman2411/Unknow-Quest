@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -271,6 +271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 322579474}
   - component: {fileID: 322579473}
+  - component: {fileID: 322579475}
   m_Layer: 0
   m_Name: Ennemi Attack Manager
   m_TagString: Untagged
@@ -291,8 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ennemiObject: {fileID: 1491334295}
-  playerObject: {fileID: 648876501}
-  _radarRange: 8
+  playerObject: {fileID: 1554528018}
 --- !u!4 &322579474
 Transform:
   m_ObjectHideFlags: 0
@@ -308,6 +308,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &322579475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322579472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5966f8fafa976084b85e42e2f1f833ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &490343467
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +329,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 490343469}
+  - component: {fileID: 490343470}
+  - component: {fileID: 490343471}
   m_Layer: 0
   m_Name: Ennemi
   m_TagString: Untagged
@@ -340,6 +354,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &490343470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490343467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6e23dd8d646914bae2c731934c93e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ennemis: []
+  "ennemis\xC0Jour": []
+  "difficult\xE9": 1
+  distancesAvecJoueur1: []
+  distancesAvecJoueur2: []
+--- !u!65 &490343471
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490343467}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &616548229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -405,7 +457,8 @@ PrefabInstance:
       value: DogPolyart (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5052651238452875790, guid: 45288819fde2143449a96207b14db0bb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2066896392038628118, guid: 45288819fde2143449a96207b14db0bb, type: 3}
@@ -691,6 +744,11 @@ MonoBehaviour:
   life: 100
   attaque: 0
   positionEnnemi: {x: 0, y: 0, z: 0}
+--- !u!1 &1554528018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4931314296445297672, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+  m_PrefabInstance: {fileID: 616548229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1578809743
 GameObject:
   m_ObjectHideFlags: 0
